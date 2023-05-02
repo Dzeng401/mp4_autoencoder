@@ -14,7 +14,7 @@ tag_label_list = []
 mp4_link_list = []
 
 
-for i in range(1, 45):
+for i in range(46, 64):
     print(i)
     if i == 1:
         site= "https://www.flaticon.com/animated-icons-most-downloaded"
@@ -34,7 +34,11 @@ for i in range(1, 45):
         icon_url = child_icon[0]['href']
         icon_label = child_icon[0]['title']
 
-        local_mp4_file = "mp4/" + icon_label + ".mp4"
+        print(mp4_link)
+
+        # local_mp4_file = "mp4/" + icon_label + ".mp4"
+        local_mp4_file = 'mp4/' + '_'.join(mp4_link.split('/')[-3:])
+        print(local_mp4_file)
         r = requests.get(mp4_link)  
         with open(local_mp4_file, 'wb') as f:
             for chunk in r.iter_content(10000):  # 10_000 bytes
@@ -73,14 +77,15 @@ for i in range(1, 45):
             else:
                 final_tag += tag_temp[i]
                 final_tag += ','
+
         icon_label_list.append(icon_label)
         tag_label_list.append(final_tag)
         mp4_link_list.append(local_mp4_file)
         
 
-with open('icons.csv', 'w', newline='') as file:
+with open('icons.csv', 'a', newline='') as file:
     writer = csv.writer(file)
-    writer.writerow(["Icon_name", "Icon_tags", "mp4_link"]) 
+    # writer.writerow(["Icon_name", "Icon_tags", "mp4_link"]) 
     for i in range(len(icon_label_list)):
         writer.writerow([icon_label_list[i], tag_label_list[i], mp4_link_list[i]])
         
